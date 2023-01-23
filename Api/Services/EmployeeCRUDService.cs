@@ -34,7 +34,6 @@ namespace Api.Services
         public async Task<bool> Delete(int id)
         {
             return await _employeeRepository.Delete(id);
-
         }
 
         public async Task<EmployeeModel> Get(int id)
