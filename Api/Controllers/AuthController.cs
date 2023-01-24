@@ -60,9 +60,17 @@ namespace Api.Controllers
                 {
                     claims.Add(new Claim(ClaimTypes.Role, role));
                 }
+                
                 var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-                var token = new JwtSecurityToken(_configuration["JWT:ValidIssuer"], _configuration["JWT:ValidAudience"], claims, expires: DateTime.Now.AddHours(1),
-                    signingCredentials: new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256));
+ 
+                var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+                
+                var token = new JwtSecurityToken(
+                    issuer: _configuration["JWT:ValidIssuer"], 
+                    audience: _configuration["JWT:ValidAudience"], 
+                    claims: claims, 
+                    expires: DateTime.Now.AddHours(1),
+                    signingCredentials: signingCredentials);
 
                 return Ok(new
                 {
